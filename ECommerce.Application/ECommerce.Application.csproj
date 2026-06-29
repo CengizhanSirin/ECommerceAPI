@@ -10,4 +10,38 @@
     <ProjectReference Include="..\ECommerce.Domain\ECommerce.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\Authentication\" />
+    <Folder Include="Abstractions\Services\" />
+    <Folder Include="Common\Constants\" />
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Extensions\" />
+    <Folder Include="Common\Responses\" />
+    <Folder Include="DTOs\Cart\" />
+    <Folder Include="DTOs\Auth\" />
+    <Folder Include="DTOs\Address\" />
+    <Folder Include="DTOs\Brand\" />
+    <Folder Include="DTOs\Category\" />
+    <Folder Include="DTOs\Product\" />
+    <Folder Include="DTOs\User\" />
+    <Folder Include="DTOs\Order\" />
+    <Folder Include="Features\Address\" />
+    <Folder Include="Features\Auth\" />
+    <Folder Include="Features\Brand\" />
+    <Folder Include="Features\Cart\" />
+    <Folder Include="Features\Category\" />
+    <Folder Include="Features\Order\" />
+    <Folder Include="Features\Product\" />
+    <Folder Include="Features\User\" />
+    <Folder Include="Mapping\" />
+    <Folder Include="Validators\Address\" />
+    <Folder Include="Validators\Auth\" />
+    <Folder Include="Validators\Brand\" />
+    <Folder Include="Validators\Cart\" />
+    <Folder Include="Validators\Category\" />
+    <Folder Include="Validators\Order\" />
+    <Folder Include="Validators\Product\" />
+    <Folder Include="Validators\User\" />
+  </ItemGroup>
+
 </Project>

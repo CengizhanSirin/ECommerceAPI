@@ -16,7 +16,6 @@
     <Folder Include="Common\Constants\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Extensions\" />
-    <Folder Include="Common\Responses\" />
     <Folder Include="DTOs\Cart\" />
     <Folder Include="DTOs\Auth\" />
     <Folder Include="DTOs\Address\" />

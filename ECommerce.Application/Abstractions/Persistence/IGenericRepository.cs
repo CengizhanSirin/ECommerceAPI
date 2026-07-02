@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using ECommerce.Domain.Common;
+using System.Linq.Expressions;
 
 namespace ECommerce.Application.Abstractions.Persistence
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T?> GetByIdAsync(int id);
 

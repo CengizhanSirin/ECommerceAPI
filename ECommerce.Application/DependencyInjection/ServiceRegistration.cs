@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application.DependencyInjection
 {
-    internal class ServiceRegistration
+    public static class ServiceRegistration
     {
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        {
+            return services;
+        }
     }
 }

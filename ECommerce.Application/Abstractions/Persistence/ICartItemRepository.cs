@@ -2,7 +2,7 @@
 
 namespace ECommerce.Application.Abstractions.Persistence
 {
-    public interface IAppUserRepository: IGenericRepository<AppUser>
+    public interface ICartItemRepository:IGenericRepository<CartItem>
     {
     }
 }

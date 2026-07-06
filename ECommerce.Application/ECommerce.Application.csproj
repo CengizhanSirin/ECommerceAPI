@@ -24,7 +24,6 @@
     <Folder Include="Features\Order\" />
     <Folder Include="Features\Product\" />
     <Folder Include="Features\User\" />
-    <Folder Include="Mapping\" />
     <Folder Include="Validators\Address\" />
     <Folder Include="Validators\Auth\" />
     <Folder Include="Validators\Brand\" />
@@ -33,6 +32,10 @@
     <Folder Include="Validators\Order\" />
     <Folder Include="Validators\Product\" />
     <Folder Include="Validators\User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 
 </Project>

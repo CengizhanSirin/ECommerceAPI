@@ -1,3 +1,4 @@
+using ECommerce.Application.DependencyInjection;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Context;
 using ECommerce.Infrastructure.DependencyInjection;
@@ -13,6 +14,7 @@ builder.Services.AddControllers();
 //builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 // Identity
 builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options =>

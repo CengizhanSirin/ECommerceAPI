@@ -1,13 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ECommerce.Application.Mapping;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application.DependencyInjection
 {
-    public static class ServiceRegistration
+    public static class ApplicationServiceRegistration
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddAutoMapper(typeof(CategoryProfile).Assembly);
             return services;
-        }
+        
     }
 }

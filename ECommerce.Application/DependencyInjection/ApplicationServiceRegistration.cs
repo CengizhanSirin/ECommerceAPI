@@ -7,7 +7,7 @@ namespace ECommerce.Application.DependencyInjection
 {
     public static class ApplicationServiceRegistration
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(CategoryProfile).Assembly);
 

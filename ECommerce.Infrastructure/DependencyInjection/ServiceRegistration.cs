@@ -13,16 +13,17 @@ namespace ECommerce.Infrastructure.DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("SqlServer");
+            var connectionString = configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException(
+        "Connection string 'SqlServer' not found."); ;
 
-            // DbContext
+            // Database
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);
             });
 
 
-            // JWT Settings
+            // Configuration
             services.Configure<JwtSettings>( configuration.GetSection(JwtSettings.SectionName));
                
 

@@ -25,5 +25,40 @@
                 Data = default
             };
         }
+
+        public new static ResultT<T> BadRequest(  string message, IEnumerable<string>? errors = null)
+        {
+            return Failure(message, ErrorCodes.BadRequest, errors);
+        }
+
+        public new static ResultT<T> Validation(  string message, IEnumerable<string>? errors = null)
+        {
+            return Failure(message, ErrorCodes.ValidationError, errors);
+        }
+
+        public new static ResultT<T> NotFound(string message)
+        {
+            return Failure(message, ErrorCodes.NotFound);
+        }
+
+        public new static ResultT<T> Conflict(string message)
+        {
+            return Failure(message, ErrorCodes.Conflict);
+        }
+
+        public new static ResultT<T> Unauthorized(string message)
+        {
+            return Failure(message, ErrorCodes.Unauthorized);
+        }
+
+        public new static ResultT<T> Forbidden(string message)
+        {
+            return Failure(message, ErrorCodes.Forbidden);
+        }
+
+        public new static ResultT<T> InternalError(string message)
+        {
+            return Failure(message, ErrorCodes.InternalServerError);
+        }
     }
 }

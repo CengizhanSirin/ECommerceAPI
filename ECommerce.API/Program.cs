@@ -1,20 +1,32 @@
+using ECommerce.API.Extensions;
+using ECommerce.API.Filters;
 using ECommerce.Application.DependencyInjection;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Context;
 using ECommerce.Infrastructure.DependencyInjection;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddInfrastructure(builder.Configuration).AddApplication().AddSwaggerGenExt();
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-//builder.Services.AddOpenApi();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
+
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddEndpointsApiExplorer();
 
 // Identity
 builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options =>
@@ -37,14 +49,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options =>
 
 var app = builder.Build();
 
+app.UseGlobalExceptionMiddleware();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.MapOpenApi();
+    app.UseSwaggerExt();
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

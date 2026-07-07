@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Abstractions\Authentication\" />
     <Folder Include="Abstractions\Services\" />
-    <Folder Include="Common\Constants\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Extensions\" />
     <Folder Include="Features\Address\" />

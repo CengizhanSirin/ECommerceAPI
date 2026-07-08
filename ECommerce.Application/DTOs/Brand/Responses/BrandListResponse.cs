@@ -1,4 +1,10 @@
 ﻿namespace ECommerce.Application.DTOs.Brand.Responses;
 
-public record BrandListResponse(int Id, string Name,string? LogoUrl,bool IsActive);
+public sealed class BrandListResponse
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public string? LogoUrl { get; set; }
+    public bool IsActive { get; set; }
+}
 

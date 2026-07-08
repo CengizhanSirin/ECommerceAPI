@@ -1,3 +1,10 @@
 ﻿namespace ECommerce.Application.DTOs.Category.Responses;
 
-public record CategoryListResponse(int Id,string Name,string? ImageUrl,bool IsActive,int DisplayOrder);
+public sealed class CategoryListResponse
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public string? ImageUrl { get; set; }
+    public bool IsActive { get; set; }
+    public int DisplayOrder { get; set; }
+}

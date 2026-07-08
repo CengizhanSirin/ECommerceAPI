@@ -11,6 +11,8 @@ namespace ECommerce.Application.Mapping
         {
             CreateMap<ProductImage, ProductImageResponse>();
 
+            CreateMap<ProductImage, ProductImageDetailResponse>();
+
             CreateMap<CreateProductImageRequest, ProductImage>();
 
             CreateMap<UpdateProductImageRequest, ProductImage>();

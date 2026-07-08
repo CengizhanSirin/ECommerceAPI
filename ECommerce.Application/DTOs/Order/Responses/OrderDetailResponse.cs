@@ -3,4 +3,15 @@ using ECommerce.Domain.Enums;
 
 namespace ECommerce.Application.DTOs.Order.Responses;
 
-public record OrderDetailResponse(int Id, string OrderNumber, decimal TotalPrice, OrderStatus OrderStatus, PaymentStatus PaymentStatus, AddressDetailResponse Address, IReadOnlyList<OrderItemResponse> Items, DateTimeOffset CreatedDate, DateTimeOffset? UpdatedDate);
+public sealed class OrderDetailResponse
+{
+    public int Id { get; set; }
+    public string OrderNumber { get; set; } = null!;
+    public decimal TotalPrice { get; set; }
+    public OrderStatus OrderStatus { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
+    public AddressDetailResponse Address { get; set; } = null!;
+    public IReadOnlyList<OrderItemResponse> Items { get; set; } = [];
+    public DateTimeOffset CreatedDate { get; set; }
+    public DateTimeOffset? UpdatedDate { get; set; }
+}

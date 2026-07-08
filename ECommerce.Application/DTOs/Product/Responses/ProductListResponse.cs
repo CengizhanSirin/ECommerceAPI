@@ -1,3 +1,20 @@
 ﻿namespace ECommerce.Application.DTOs.Product.Responses;
 
-public record ProductListResponse(int Id, string Name, decimal Price, int Stock, bool IsActive, string? MainImageUrl, string CategoryName, string BrandName);
+public sealed class ProductListResponse
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; } = null!;
+
+    public decimal Price { get; set; }
+
+    public int Stock { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public string? MainImageUrl { get; set; }
+
+    public string CategoryName { get; set; } = null!;
+
+    public string BrandName { get; set; } = null!;
+}

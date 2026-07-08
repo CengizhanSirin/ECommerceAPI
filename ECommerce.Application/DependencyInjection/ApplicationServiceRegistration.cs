@@ -2,7 +2,6 @@
 using ECommerce.Application.Mapping;
 using ECommerce.Application.Services;
 using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Application.DependencyInjection
@@ -17,6 +16,7 @@ namespace ECommerce.Application.DependencyInjection
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IProductService, ProductService>();
 
             return services;
         }

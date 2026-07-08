@@ -1,3 +1,12 @@
 ﻿namespace ECommerce.Application.DTOs.ProductImage.Responses;
 
-public record ProductImageDetailResponse(int Id, string ImageUrl, bool IsMain, int DisplayOrder, int ProductId, DateTimeOffset CreatedDate, DateTimeOffset? UpdatedDate);
+public sealed class ProductImageDetailResponse
+{
+    public int Id { get; set; }
+    public string ImageUrl { get; set; } = null!;
+    public bool IsMain { get; set; }
+    public int DisplayOrder { get; set; }
+    public int ProductId { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
+    public DateTimeOffset? UpdatedDate { get; set; }
+}

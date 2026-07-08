@@ -1,3 +1,9 @@
 ﻿namespace ECommerce.Application.DTOs.Auth.Responses;
 
-public record TokenResponse(string AccessToken, string RefreshToken, DateTimeOffset AccessTokenExpiration, DateTimeOffset RefreshTokenExpiration);
+public sealed class TokenResponse
+{
+    public string AccessToken { get; set; } = null!;
+    public string RefreshToken { get; set; } = null!;
+    public DateTimeOffset AccessTokenExpiration { get; set; }
+    public DateTimeOffset RefreshTokenExpiration { get; set; }
+}

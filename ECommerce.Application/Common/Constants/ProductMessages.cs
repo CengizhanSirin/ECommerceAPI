@@ -6,6 +6,8 @@ public static class ProductMessages
     public const string ProductNotFound = "Ürün bulunamadı.";
     public const string ProductSkuAlreadyExists = "Bu SKU zaten kullanılmaktadır.";
     public const string InsufficientStock = "Yetersiz stok.";
+    public const string ProductCategoryNotFound = "Ürüne ait kategori bulunamadı.";
+    public const string ProductBrandNotFound = "Ürüne ait marka bulunamadı.";
 
     // Success
     public const string ProductCreated = "Ürün başarıyla oluşturuldu.";

@@ -1,3 +1,12 @@
 ﻿namespace ECommerce.Application.DTOs.Cart.Responses;
 
-public record CartItemResponse(int Id, int ProductId, string ProductName, string? MainImageUrl, decimal UnitPrice, int Quantity, decimal TotalPrice);
+public sealed class CartItemResponse
+{
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public string ProductName { get; set; } = null!;
+    public string? MainImageUrl { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
+    public decimal TotalPrice { get; set; }
+}

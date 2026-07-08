@@ -8,4 +8,5 @@ public static class ErrorMessages
     public const string Unauthorized = "Bu işlem için yetkiniz bulunmamaktadır.";
     public const string Forbidden = "Bu kaynağa erişim izniniz bulunmamaktadır.";
     public const string AlreadyExists = "Bu kayıt zaten mevcut.";
+    public const string InvalidOperation = "Geçersiz işlem.";
 }

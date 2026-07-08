@@ -18,8 +18,7 @@ namespace ECommerce.Application.Validators.Brand
 
             RuleFor(x => x.LogoUrl)
                 .MaximumLength(500).WithMessage("Logo URL en fazla 500 karakter olabilir.")
-                .Must(url => string.IsNullOrWhiteSpace(url) ||
-                             Uri.TryCreate(url, UriKind.Absolute, out _))
+                .Must(url => string.IsNullOrWhiteSpace(url) || Uri.TryCreate(url, UriKind.Absolute, out _))
                 .WithMessage("Geçerli bir URL giriniz.");
         }
     }

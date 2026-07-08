@@ -16,6 +16,7 @@ namespace ECommerce.Application.DependencyInjection
             services.AddValidatorsFromAssembly(typeof(ApplicationServiceRegistration).Assembly);
 
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IBrandService, BrandService>();
 
             return services;
         }

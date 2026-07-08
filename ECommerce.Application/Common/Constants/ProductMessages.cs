@@ -2,7 +2,15 @@
 
 public static class ProductMessages
 {
+    // Errors
     public const string ProductNotFound = "Ürün bulunamadı.";
     public const string ProductSkuAlreadyExists = "Bu SKU zaten kullanılmaktadır.";
-    public const string InsufficientStock = "Yetersiz stok.";  
+    public const string InsufficientStock = "Yetersiz stok.";
+
+    // Success
+    public const string ProductCreated = "Ürün başarıyla oluşturuldu.";
+    public const string ProductUpdated = "Ürün başarıyla güncellendi.";
+    public const string ProductDeleted = "Ürün başarıyla silindi.";
+    public const string ProductRetrieved = "Ürün başarıyla getirildi.";
+    public const string ProductsRetrieved = "Ürünler başarıyla getirildi.";
 }

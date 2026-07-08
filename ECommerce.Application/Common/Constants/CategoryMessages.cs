@@ -2,8 +2,11 @@
 
 public static class CategoryMessages
 {
+    // Errors
     public const string CategoryNotFound = "Kategori bulunamadı.";
     public const string CategoryNameAlreadyExists = "Bu kategori adı zaten kullanılmaktadır.";
+
+    // Success
     public const string CategoryCreated = "Kategori başarıyla oluşturuldu.";
     public const string CategoryUpdated = "Kategori başarıyla güncellendi.";
     public const string CategoryDeleted = "Kategori başarıyla silindi";

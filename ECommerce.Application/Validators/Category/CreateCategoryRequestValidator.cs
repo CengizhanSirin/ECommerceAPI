@@ -20,8 +20,7 @@ namespace ECommerce.Application.Validators.Category
             RuleFor(x => x.ImageUrl)
                 .Cascade(CascadeMode.Stop)
                 .MaximumLength(500).WithMessage("Görsel URL en fazla 500 karakter olabilir.")
-                .Must(url => string.IsNullOrWhiteSpace(url) ||
-                             Uri.TryCreate(url, UriKind.Absolute, out _))
+                .Must(url => string.IsNullOrWhiteSpace(url) || Uri.TryCreate(url, UriKind.Absolute, out _))        
                 .WithMessage("Geçerli bir URL giriniz.");
 
             RuleFor(x => x.DisplayOrder)

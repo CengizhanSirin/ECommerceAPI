@@ -21,14 +21,12 @@ namespace ECommerce.API.Controllers
                 : HandleFailure(result);
         }
 
-        protected IActionResult HandleCreatedResult<T>(
-            ResultT<T> result,
-            string actionName,
-            object routeValues)
+        protected IActionResult HandleCreatedResult<T>(ResultT<T> result, string actionName, Func<T, object> routeValuesFactory)
         {
-            return result.IsSuccess
-                ? CreatedAtAction(actionName, routeValues, result)
-                : HandleFailure(result);
+            if (!result.IsSuccess)
+                return HandleFailure(result);
+
+                return CreatedAtAction(actionName, routeValuesFactory(result.Data!), result);  
         }
 
         protected IActionResult HandleNoContent(Result result)

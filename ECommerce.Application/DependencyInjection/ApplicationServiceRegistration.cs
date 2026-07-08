@@ -1,4 +1,6 @@
-﻿using ECommerce.Application.Mapping;
+﻿using ECommerce.Application.Abstractions.Services;
+using ECommerce.Application.Mapping;
+using ECommerce.Application.Services;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,8 @@ namespace ECommerce.Application.DependencyInjection
             services.AddAutoMapper(typeof(CategoryProfile).Assembly);
 
             services.AddValidatorsFromAssembly(typeof(ApplicationServiceRegistration).Assembly);
+
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }

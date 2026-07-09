@@ -16,9 +16,6 @@ namespace ECommerce.Application.Validators.Product
 
             RuleFor(x => x.DisplayOrder)
                 .GreaterThanOrEqualTo(0).WithMessage("Sıralama değeri 0'dan küçük olamaz.");
-
-            RuleFor(x => x.ProductId)
-                .GreaterThan(0).WithMessage("Geçerli bir ürün seçiniz.");
         }
     }
 }

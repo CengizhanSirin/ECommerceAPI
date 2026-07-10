@@ -1,11 +1,9 @@
 using ECommerce.API.Extensions;
 using ECommerce.API.Filters;
 using ECommerce.Application.DependencyInjection;
-using ECommerce.Domain.Entities;
-using ECommerce.Infrastructure.Context;
 using ECommerce.Infrastructure.DependencyInjection;
+using ECommerce.Infrastructure.Persistence.Seeders;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -28,26 +26,9 @@ builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddEndpointsApiExplorer();
 
-// Identity
-builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options =>
-{
-    // Password
-    options.Password.RequiredLength = 6;
-    options.Password.RequireDigit = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-
-    // User
-    options.User.RequireUniqueEmail = true;
-
-    // SignIn
-    options.SignIn.RequireConfirmedEmail = false;
-})
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
-
 var app = builder.Build();
+
+await RoleSeeder.SeedAsync(app.Services);
 
 app.UseGlobalExceptionMiddleware();
 

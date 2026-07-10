@@ -1,10 +1,12 @@
 ﻿using ECommerce.Application.Abstractions.Services;
 using ECommerce.Application.DTOs.Address.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Controllers
 {
+    [Authorize]
     public sealed class AddressesController : BaseApiController
     {
         private readonly IAddressService _addressService;

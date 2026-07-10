@@ -11,34 +11,38 @@ namespace ECommerce.Application.Services
 {
     public sealed class AddressService : IAddressService
     {
+        private readonly ICurrentUserService _currentUserService;
         private readonly IAddressRepository _addressRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        private const int TestUserId = 1;
-
-        //TODO: JWT eklenince Auth gelince AppUserId'yi buradan alıp kullanıcının adreslerini filtreleyeceğiz.
-
-        public AddressService(IAddressRepository addressRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public AddressService(IAddressRepository addressRepository, IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUserService)
         {
+            _currentUserService = currentUserService;
             _addressRepository = addressRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+
         }
 
         public async Task<ResultT<AddressResponse>> CreateAsync(CreateAddressRequest request, CancellationToken cancellationToken = default)
         {
-            if (request.IsDefault)
+            var userId = _currentUserService.UserId;
+
+            var addressCount = await _addressRepository.CountAsync(x => x.AppUserId == userId, cancellationToken);
+
+            var newAddress = _mapper.Map<Address>(request);
+
+            newAddress.AppUserId = userId;
+            newAddress.IsDefault = addressCount == 0 || request.IsDefault;
+
+            if (request.IsDefault && addressCount > 0)
             {
-                var addresses = await _addressRepository.WhereAsync(x => true, cancellationToken);
+                var addresses = await _addressRepository.WhereAsync(x => x.AppUserId == userId, cancellationToken);
 
                 foreach (var address in addresses)
                     address.IsDefault = false;
             }
-
-            var newAddress = _mapper.Map<Address>(request);
-
-            newAddress.AppUserId = TestUserId;
 
             await _addressRepository.AddAsync(newAddress, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -50,7 +54,8 @@ namespace ECommerce.Application.Services
 
         public async Task<Result> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
+            var userId = _currentUserService.UserId;
+            var address = await _addressRepository.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == userId, cancellationToken);
 
             if (address is null)
                 return Result.NotFound(AddressMessages.AddressNotFound);
@@ -64,7 +69,9 @@ namespace ECommerce.Application.Services
 
         public async Task<ResultT<IReadOnlyList<AddressListResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var addresses = await _addressRepository.WhereAsync(x => x.AppUserId == TestUserId, cancellationToken);
+            var userId = _currentUserService.UserId;
+
+            var addresses = await _addressRepository.WhereAsync(x => x.AppUserId == userId, cancellationToken);
 
             var orderedAddresses = addresses.OrderByDescending(x => x.IsDefault).ThenByDescending(x => x.CreatedDate).ToList();
 
@@ -75,7 +82,9 @@ namespace ECommerce.Application.Services
 
         public async Task<ResultT<AddressDetailResponse>> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
+            var userId = _currentUserService.UserId;
+
+            var address = await _addressRepository.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == userId, cancellationToken);
 
             if (address is null)
                 return ResultT<AddressDetailResponse>.NotFound(AddressMessages.AddressNotFound);
@@ -87,12 +96,14 @@ namespace ECommerce.Application.Services
 
         public async Task<Result> SetDefaultAsync(int id, CancellationToken cancellationToken = default)
         {
-            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
+            var userId = _currentUserService.UserId;
+
+            var address = await _addressRepository.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == userId, cancellationToken);
 
             if (address is null)
                 return Result.NotFound(AddressMessages.AddressNotFound);
 
-            var addresses = await _addressRepository.WhereAsync(x => x.AppUserId == TestUserId, cancellationToken);
+            var addresses = await _addressRepository.WhereAsync(x => x.AppUserId == userId, cancellationToken);
 
             foreach (var item in addresses)
                 item.IsDefault = item.Id == id;
@@ -104,18 +115,12 @@ namespace ECommerce.Application.Services
 
         public async Task<Result> UpdateAsync(int id, UpdateAddressRequest request, CancellationToken cancellationToken = default)
         {
-            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
+            var userId = _currentUserService.UserId;
+
+            var address = await _addressRepository.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == userId, cancellationToken);
 
             if (address is null)
                 return Result.NotFound(AddressMessages.AddressNotFound);
-
-            if (request.IsDefault)
-            {
-                var addresses = await _addressRepository.WhereAsync(x => x.AppUserId == TestUserId && x.Id != id, cancellationToken);
-
-                foreach (var item in addresses)
-                    item.IsDefault = false;
-            }
 
             _mapper.Map(request, address);
 

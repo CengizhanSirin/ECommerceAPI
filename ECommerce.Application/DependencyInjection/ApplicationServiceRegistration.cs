@@ -18,6 +18,7 @@ namespace ECommerce.Application.DependencyInjection
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductImageService, ProductImageService>();
+            services.AddScoped<IAddressService, AddressService>();  
 
             return services;
         }

@@ -9,7 +9,7 @@ using ECommerce.Domain.Entities;
 
 namespace ECommerce.Application.Services
 {
-    public class ProductImageService : IProductImageService
+    public sealed class ProductImageService : IProductImageService
     {
         private readonly IProductImageRepository _productImageRepository;
         private readonly IProductRepository _productRepository;

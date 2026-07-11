@@ -12,6 +12,10 @@ public static class CartMessages
     public const string CartItemQuantityMustBeAtLeastOne = "Sepet ürünü miktarı en az 1 olmalıdır.";
     public const string CartItemQuantityMustBeLessThanOrEqualToStock = "Sepet ürünü miktarı stok miktarına eşit veya daha az olmalıdır.";
     public const string CartItemQuantityMustBeLessThanOrEqualToMaxQuantity = "Sepet ürünü miktarı maksimum miktara eşit veya daha az olmalıdır.";
+    public const string ProductNotFound = "Ürün bulunamadı.";
+    public const string ProductNotActive = "Bu ürün satışa açık değildir.";
+    public const string InsufficientStock = "Ürün için yeterli stok bulunmamaktadır.";
+
 
     // Success
     public const string CartCreated = "Sepet başarıyla oluşturuldu.";
@@ -19,4 +23,6 @@ public static class CartMessages
     public const string CartItemUpdated = "Sepet  başarıyla güncellendi.";
     public const string CartItemRemoved = "Sepet  başarıyla kaldırıldı.";
     public const string CartRetrieved = "Sepet başarıyla getirildi.";
+    public const string ProductAddedToCart = "Ürün sepete başarıyla eklendi.";
+    public const string CartCleared = "Sepet başarıyla temizlendi.";
 }

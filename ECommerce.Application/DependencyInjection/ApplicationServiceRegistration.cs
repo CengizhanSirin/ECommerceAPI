@@ -19,6 +19,7 @@ namespace ECommerce.Application.DependencyInjection
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductImageService, ProductImageService>();
             services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ICartService, CartService>();
 
             return services;
         }

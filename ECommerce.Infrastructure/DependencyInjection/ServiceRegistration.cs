@@ -3,6 +3,7 @@ using ECommerce.Application.Abstractions.Services;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Authentication;
 using ECommerce.Infrastructure.Context;
+using ECommerce.Infrastructure.Payments;
 using ECommerce.Infrastructure.Persistence.Repositories;
 using ECommerce.Infrastructure.Persistence.UnitOfWork;
 using ECommerce.Infrastructure.Services;
@@ -118,6 +119,8 @@ namespace ECommerce.Infrastructure.DependencyInjection
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPaymentService, FakePaymentService>();
+            services.AddScoped<IPaymentGateway, FakePaymentGateway>();
             services.AddHttpContextAccessor();
 
             // Unit Of Work

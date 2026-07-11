@@ -10,6 +10,14 @@ public static class OrderMessages
     public const string OrderCannotBeReturned = "Bu sipariş iade edilemez.";
     public const string OrderCannotBeRefunded = "Bu sipariş geri ödenemez.";
     public const string OrderCannotBeCompleted = "Bu sipariş tamamlanamaz.";
+    public const string OrderCreateFailed = "Sipariş oluşturulurken bir hata oluştu.";
+    public const string CartNotFound = "Sepet bulunamadı.";
+    public const string CartIsEmpty = "Sepet boş olduğu için sipariş oluşturulamaz.";
+    public const string AddressNotFound = "Adres bulunamadı veya kullanıcıya ait değil.";
+    public const string ProductNotFound = "Sepetteki ürünlerden biri bulunamadı.";
+    public const string ProductNotActive = "Sepetteki ürünlerden biri satışa kapalıdır.";
+    public const string InsufficientStock = "Sepetteki ürünlerden biri için yeterli stok bulunmamaktadır.";
+    public const string InvalidOrderStatusTransition ="Sipariş durumu bu aşamaya geçirilemez.";
 
 
     // Success
@@ -21,5 +29,5 @@ public static class OrderMessages
     public const string OrderDelivered = "Sipariş başarıyla teslim edildi.";
     public const string OrderReturned = "Sipariş başarıyla iade edildi.";
     public const string OrderCompleted = "Sipariş başarıyla tamamlandı.";
-
+    public const string OrderStatusUpdated = "Sipariş başarıyla güncellendi.";
 }

@@ -117,6 +117,7 @@ namespace ECommerce.Infrastructure.DependencyInjection
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddHttpContextAccessor();
 
             // Unit Of Work

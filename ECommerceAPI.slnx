@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/src/" />
+  <Folder Name="/src/">
+    <Project Path="ECommerce.UnitTests/ECommerce.UnitTests.csproj" Id="6945b0b0-970c-4fff-bb2c-d8bc9abdf02b" />
+  </Folder>
   <Folder Name="/src/API/">
     <Project Path="ECommerce.API/ECommerce.API.csproj" />
   </Folder>

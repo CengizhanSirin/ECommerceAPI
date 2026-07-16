@@ -26,7 +26,7 @@ namespace ECommerce.Infrastructure.Configurations
                 .HasDefaultValue(true);
 
             builder.HasIndex(x => x.Name)
-                .IsUnique();
+                .IsUnique().HasFilter("[IsDeleted] = 0"); 
 
             // Relationship
 

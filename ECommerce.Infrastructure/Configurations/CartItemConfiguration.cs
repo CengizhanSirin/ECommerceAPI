@@ -15,10 +15,10 @@ namespace ECommerce.Infrastructure.Configurations
             builder.Property(x => x.Quantity)
                 .IsRequired();
 
-            builder.HasIndex(x => new { x.CartId, x.ProductId }).IsUnique();
-       
+            builder.HasIndex(x => new { x.CartId, x.ProductId }).IsUnique().HasFilter("[IsDeleted] = 0");
 
-            
+
+
 
             builder.HasOne(x => x.Cart)
                 .WithMany(x => x.CartItems)

@@ -180,14 +180,13 @@ namespace ECommerce.UnitTests.Services.Addresses
         public async Task DeleteAsync_Should_DeleteAddress_When_AddressExists()
         {
             // Arrange
-            const int addressId = 1;
-
-            var address = CreateAddress(id: addressId, userId: CurrentUserId);
+            var address = CreateAddress();
+            address.IsDefault = false;
 
             _addressRepositoryMock.Setup(repository => repository.FirstOrDefaultAsync(It.IsAny<Expression<Func<Address, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(address);
 
             // Act
-            var result = await _addressService.DeleteAsync(addressId);
+            var result = await _addressService.DeleteAsync(address.Id);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -197,6 +196,66 @@ namespace ECommerce.UnitTests.Services.Addresses
 
             _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
+
+        [Fact]
+        public async Task DeleteAsync_Should_SetAnotherAddressAsDefault_When_DefaultAddressIsDeleted()
+        {
+            // Arrange
+            var defaultAddress = CreateAddress(id: 1);
+            defaultAddress.IsDefault = true;
+
+            var replacementAddress = CreateAddress(id: 2);
+            replacementAddress.IsDefault = false;
+
+            _addressRepositoryMock.SetupSequence(repository => repository.FirstOrDefaultAsync(It.IsAny<Expression<Func<Address, bool>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(defaultAddress)
+                .ReturnsAsync(replacementAddress);
+
+            // Act
+            var result = await _addressService.DeleteAsync(defaultAddress.Id);
+
+            // Assert
+            Assert.True(result.IsSuccess);
+            Assert.Equal(AddressMessages.AddressDeleted, result.Message);
+
+            Assert.False(defaultAddress.IsDefault);
+            Assert.True(replacementAddress.IsDefault);
+
+            _addressRepositoryMock.Verify(repository => repository.Delete(defaultAddress), Times.Once());
+
+            _addressRepositoryMock.Verify(repository => repository.FirstOrDefaultAsync(It.IsAny<Expression<Func<Address, bool>>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task DeleteAsync_Should_DeleteSuccessfully_When_DefaultAddressIsTheOnlyAddress()
+        {
+            // Arrange
+            var defaultAddress = CreateAddress(id: 1);
+
+            defaultAddress.IsDefault = true;
+
+            _addressRepositoryMock.SetupSequence(repository => repository.FirstOrDefaultAsync(It.IsAny<Expression<Func<Address, bool>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(defaultAddress)
+                .ReturnsAsync((Address?)null);
+
+            // Act
+            var result = await _addressService.DeleteAsync(defaultAddress.Id);
+
+            // Assert
+            Assert.True(result.IsSuccess);
+            Assert.Equal(AddressMessages.AddressDeleted, result.Message);
+
+            Assert.False(defaultAddress.IsDefault);
+
+            _addressRepositoryMock.Verify(repository => repository.Delete(defaultAddress), Times.Once());
+
+            _addressRepositoryMock.Verify(repository => repository.FirstOrDefaultAsync(It.IsAny<Expression<Func<Address, bool>>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
 
         // =========================================================
         // GET ALL
@@ -246,6 +305,7 @@ namespace ECommerce.UnitTests.Services.Addresses
             _mapperMock.Verify(mapper => mapper.Map<IReadOnlyList<AddressListResponse>>(It.Is<List<Address>>(orderedAddresses =>
                 orderedAddresses.Select(address => address.Id).SequenceEqual(new[] { 2, 3, 1 }))), Times.Once());
         }
+
 
         // =========================================================
         // GET BY ID

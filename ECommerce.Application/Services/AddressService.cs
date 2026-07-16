@@ -60,6 +60,16 @@ namespace ECommerce.Application.Services
             if (address is null)
                 return Result.NotFound(AddressMessages.AddressNotFound);
 
+            if (address.IsDefault)
+            {
+                var replacementAddress = await _addressRepository.FirstOrDefaultAsync(x => x.AppUserId == userId && x.Id != address.Id, cancellationToken);
+
+                address.IsDefault = false;
+
+                if (replacementAddress is not null)
+                    replacementAddress.IsDefault = true;
+            }
+
             _addressRepository.Delete(address);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

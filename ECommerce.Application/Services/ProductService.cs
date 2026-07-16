@@ -46,17 +46,34 @@ namespace ECommerce.Application.Services
 
             var product = _mapper.Map<Product>(request);
 
-            await _productRepository.AddAsync(product, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-            var createdProduct = await _productRepository.GetByIdWithRelationsAsync(product.Id,  cancellationToken);
+            try
+            {
+                await _productRepository.AddAsync(product, cancellationToken);
 
-            if (createdProduct is null)
-                return ResultT<ProductResponse>.NotFound(ProductMessages.ProductNotFound);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var response = _mapper.Map<ProductResponse>(createdProduct);
+                var createdProduct = await _productRepository.GetByIdWithRelationsAsync(product.Id, cancellationToken);
 
-            return ResultT<ProductResponse>.Success(response, ProductMessages.ProductCreated);
+                if (createdProduct is null)
+                {
+                    throw new InvalidOperationException($"Oluşturulan ürün yeniden yüklenemedi. ProductId: {product.Id}");
+
+                }
+
+                var response = _mapper.Map<ProductResponse>(createdProduct);
+
+                await _unitOfWork.CommitTransactionAsync(cancellationToken);
+
+                return ResultT<ProductResponse>.Success(response, ProductMessages.ProductCreated);
+
+            }
+            catch
+            {
+                await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                throw;
+            }
         }
 
         public async Task<Result> DeleteAsync(int id, CancellationToken cancellationToken = default)

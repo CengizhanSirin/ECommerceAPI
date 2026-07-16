@@ -37,6 +37,7 @@ namespace ECommerce.UnitTests.Services.Products
         // CREATE
         // =========================================================
 
+
         [Fact]
         public async Task CreateAsync_Should_ReturnConflict_When_SkuAlreadyExists()
         {
@@ -62,6 +63,8 @@ namespace ECommerce.UnitTests.Services.Products
             _productRepositoryMock.Verify(repository => repository.AddAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()), Times.Never());
 
             _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact]
@@ -89,6 +92,8 @@ namespace ECommerce.UnitTests.Services.Products
             _productRepositoryMock.Verify(repository => repository.AddAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()), Times.Never());
 
             _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact]
@@ -116,6 +121,8 @@ namespace ECommerce.UnitTests.Services.Products
             _productRepositoryMock.Verify(repository => repository.AddAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()), Times.Never());
 
             _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact]
@@ -124,6 +131,9 @@ namespace ECommerce.UnitTests.Services.Products
             // Arrange
             var request = CreateValidRequest();
             var product = CreateProduct();
+
+            // Mock SaveChanges ID üretmediği için açıkça belirliyoruz.
+            product.Id = 10;
 
             _productRepositoryMock.Setup(repository => repository.AnyAsync(It.IsAny<Expression<Func<Product, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
@@ -136,18 +146,23 @@ namespace ECommerce.UnitTests.Services.Products
             _productRepositoryMock.Setup(repository => repository.GetByIdWithRelationsAsync(product.Id, It.IsAny<CancellationToken>())).ReturnsAsync((Product?)null);
 
             // Act
-            var result = await _productService.CreateAsync(request);
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _productService.CreateAsync(request));
 
             // Assert
-            Assert.False(result.IsSuccess);
-            Assert.Equal(ProductMessages.ProductNotFound, result.Message);
-            Assert.Null(result.Data);
+            Assert.Contains($"ProductId: {product.Id}", exception.Message);
+
 
             _productRepositoryMock.Verify(repository => repository.AddAsync(product, It.IsAny<CancellationToken>()), Times.Once());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Once());
 
             _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
 
             _productRepositoryMock.Verify(repository => repository.GetByIdWithRelationsAsync(product.Id, It.IsAny<CancellationToken>()), Times.Once());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Never());
 
             _mapperMock.Verify(mapper => mapper.Map<ProductResponse>(It.IsAny<Product>()), Times.Never());
         }
@@ -160,6 +175,9 @@ namespace ECommerce.UnitTests.Services.Products
             var product = CreateProduct();
             var createdProduct = CreateProduct();
             var response = CreateProductResponse(createdProduct);
+
+            product.Id = 10;
+            createdProduct.Id = product.Id;
 
             _productRepositoryMock.Setup(repository => repository.AnyAsync(It.IsAny<Expression<Func<Product, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
@@ -182,6 +200,9 @@ namespace ECommerce.UnitTests.Services.Products
             Assert.NotNull(result.Data);
             Assert.Same(response, result.Data);
 
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Once());
+
             _productRepositoryMock.Verify(repository => repository.AddAsync(product, It.IsAny<CancellationToken>()), Times.Once());
 
             _unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
@@ -189,7 +210,12 @@ namespace ECommerce.UnitTests.Services.Products
             _productRepositoryMock.Verify(repository => repository.GetByIdWithRelationsAsync(product.Id, It.IsAny<CancellationToken>()), Times.Once());
 
             _mapperMock.Verify(mapper => mapper.Map<ProductResponse>(createdProduct), Times.Once());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.CommitTransactionAsync(It.IsAny<CancellationToken>()), Times.Once());
+
+            _unitOfWorkMock.Verify(unitOfWork => unitOfWork.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Never());
         }
+
 
         // =========================================================
         // DELETE

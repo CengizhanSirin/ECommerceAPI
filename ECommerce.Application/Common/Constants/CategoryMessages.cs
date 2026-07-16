@@ -11,6 +11,5 @@ public static class CategoryMessages
     public const string CategoryUpdated = "Kategori başarıyla güncellendi.";
     public const string CategoryDeleted = "Kategori başarıyla silindi";
     public const string CategoryListRetrieved = "Kategori listesi başarıyla alındı.";
-    public const string CategoryFound = "Kategori bulundu.";
     public const string CategoryRetrieved = "Kategori başarıyla getirildi.";
 }
